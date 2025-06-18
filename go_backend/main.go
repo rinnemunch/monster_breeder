@@ -30,8 +30,6 @@ func generateRandomMonster() Monster {
 	colors := []string{"Red", "Blue", "Green", "Purple", "Black"}
 	rarities := []string{"Common", "Uncommon", "Rare", "Epic", "Legendary"}
 
-	rand.Seed(time.Now().UnixNano())
-
 	return Monster{
 		Name:       names[rand.Intn(len(names))],
 		Color:      colors[rand.Intn(len(colors))],
@@ -70,6 +68,22 @@ func breedMonsters(parent1, parent2 Monster) Monster {
 		rarity = parent2.Rarity
 	}
 
+	// Mutation chance: 10%
+	if rand.Float64() < 0.10 {
+		strength += rand.Intn(10) + 1
+		fmt.Println("Mutation! Strength increased.")
+	}
+
+	if rand.Float64() < 0.10 {
+		speed += rand.Intn(10) + 1
+		fmt.Println("Mutation! Speed increased.")
+	}
+
+	if rand.Float64() < 0.05 {
+		rarity = "Legendary"
+		fmt.Println("Mutation! Monster became Legendary.")
+	}
+
 	return Monster{
 		Name:       name,
 		Color:      color,
@@ -105,8 +119,9 @@ func newMonsterHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/new", newMonsterHandler)
+	rand.Seed(time.Now().UnixNano())
 
+	http.HandleFunc("/new", newMonsterHandler)
 	fmt.Println("Server running at http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
