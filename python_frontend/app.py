@@ -1,10 +1,19 @@
 import requests
 
-response = requests.get("http://localhost:8080/new")
+# two random monsters
+monster1 = requests.get("http://localhost:8080/new").json()
+monster2 = requests.get("http://localhost:8080/new").json()
 
+# Print parents
+print("Parent 1:", monster1)
+print("Parent 2:", monster2)
+
+# Send to /breed route
+response = requests.post("http://localhost:8080/breed", json=[monster1, monster2])
+
+# Check and print the child
 if response.status_code == 200:
-    monster = response.json()
-    print("Got a monster from Go!")
-    print(monster)
+    child = response.json()
+    print("\nChild Monster:", child)
 else:
-    print("Failed to get monster:", response.status_code)
+    print("Breeding failed with status:", response.status_code)

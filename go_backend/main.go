@@ -140,9 +140,12 @@ func breedHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
+	fmt.Println("Starting the monster server with /new and /breed")
+
 	http.HandleFunc("/new", newMonsterHandler)
 	http.HandleFunc("/breed", breedHandler)
 
 	fmt.Println("Server running at http://localhost:8080")
+	fmt.Println("🔥 You are running the CORRECT Go file") //test
 	http.ListenAndServe(":8080", nil)
 }
