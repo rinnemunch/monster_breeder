@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"net/http"
 	"time"
 )
 
@@ -43,4 +44,11 @@ func main() {
 	}
 
 	fmt.Println(string(monsterJSON))
+}
+
+func newMonsterHandler(w http.ResponseWriter, r *http.Request) {
+	monster := generateRandomMonster()
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(monster)
 }
