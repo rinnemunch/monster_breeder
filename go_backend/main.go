@@ -2,6 +2,15 @@ package main
 
 import "fmt"
 
+type Monster struct {
+	Name       string
+	Color      string
+	Strength   int
+	Speed      int
+	Rarity     string
+	Generation int
+}
+
 func main() {
-	fmt.Println("Go backend ready.")
+	fmt.Println("Monster struct defined.")
 }
