@@ -27,23 +27,11 @@ func generateRandomMonster() Monster {
 	return Monster{
 		Name:       names[rand.Intn(len(names))],
 		Color:      colors[rand.Intn(len(colors))],
-		Strength:   rand.Intn(100) + 1, // 1–100
+		Strength:   rand.Intn(100) + 1,
 		Speed:      rand.Intn(100) + 1,
 		Rarity:     rarities[rand.Intn(len(rarities))],
 		Generation: 1,
 	}
-}
-
-func main() {
-	monster := generateRandomMonster()
-
-	monsterJSON, err := json.MarshalIndent(monster, "", "  ")
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-
-	fmt.Println(string(monsterJSON))
 }
 
 func newMonsterHandler(w http.ResponseWriter, r *http.Request) {
@@ -51,4 +39,11 @@ func newMonsterHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(monster)
+}
+
+func main() {
+	http.HandleFunc("/new", newMonsterHandler)
+
+	fmt.Println("Server running at http://localhost:8080")
+	http.ListenAndServe(":8080", nil)
 }
