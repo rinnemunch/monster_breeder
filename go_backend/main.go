@@ -118,10 +118,31 @@ func newMonsterHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(monster)
 }
 
+func breedHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Only POST allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var parents [2]Monster
+	err := json.NewDecoder(r.Body).Decode(&parents)
+	if err != nil {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+
+	child := breedMonsters(parents[0], parents[1])
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(child)
+}
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	http.HandleFunc("/new", newMonsterHandler)
+	http.HandleFunc("/breed", breedHandler)
+
 	fmt.Println("Server running at http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
