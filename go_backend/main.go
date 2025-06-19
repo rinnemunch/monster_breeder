@@ -111,6 +111,23 @@ func rarityRank(r string) int {
 	}
 }
 
+func rankToRarity(rank int) string {
+	switch rank {
+	case 1:
+		return "Common"
+	case 2:
+		return "Uncommon"
+	case 3:
+		return "Rare"
+	case 4:
+		return "Epic"
+	case 5:
+		return "Legendary"
+	default:
+		return "Common"
+	}
+}
+
 func newMonsterHandler(w http.ResponseWriter, r *http.Request) {
 	monster := generateRandomMonster()
 
@@ -137,6 +154,40 @@ func breedHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(child)
 }
 
+func evolveMonster(m Monster) Monster {
+	// Level up stats slightly
+	m.Strength += rand.Intn(5) + 1
+	m.Speed += rand.Intn(5) + 1
+
+	// Chance to evolve rarity
+	if rand.Float64() < 0.20 && rarityRank(m.Rarity) < 5 {
+		nextRank := rarityRank(m.Rarity) + 1
+		m.Rarity = rankToRarity(nextRank)
+		fmt.Println("Evolution! Rarity increased.")
+	}
+
+	return m
+}
+
+func evolveHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Only POST allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var monster Monster
+	err := json.NewDecoder(r.Body).Decode(&monster)
+	if err != nil {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+
+	evolved := evolveMonster(monster)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(evolved)
+}
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
@@ -144,6 +195,7 @@ func main() {
 
 	http.HandleFunc("/new", newMonsterHandler)
 	http.HandleFunc("/breed", breedHandler)
+	http.HandleFunc("/evolve", evolveHandler)
 
 	fmt.Println("Server running at http://localhost:8080")
 	fmt.Println("🔥 You are running the CORRECT Go file") //test
