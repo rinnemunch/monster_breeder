@@ -71,16 +71,17 @@ root.title("Monster Breeder")
 
 def save_last_monster():
     content = display.get("1.0", tk.END).strip()
-    if content.startswith("Child Monster:") or content.startswith("Parent 1:"):
+    if content.startswith("Child Monster:"):
         try:
-            json_data = content.split(":\n", 1)[1]
+            json_data = content.split("Child Monster:\n", 1)[1]
             monster = json.loads(json_data)
             save_monster(monster)
             display.insert(tk.END, "\n\n✅ Monster saved!")
         except Exception as e:
             display.insert(tk.END, f"\n\n❌ Failed to save: {e}")
     else:
-        display.insert(tk.END, "\n\n⚠️ No valid monster to save.")
+        display.insert(tk.END, "\n\n⚠️ Only Child Monsters can be saved.")
+
 
 
 # Buttons
