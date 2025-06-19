@@ -82,6 +82,14 @@ def save_last_monster():
     else:
         display.insert(tk.END, "\n\n⚠️ Only Child Monsters can be saved.")
 
+def load_saved_monsters():
+    try:
+        with open(SAVE_FILE, "r") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, FileNotFoundError):
+        return []
+
+
 
 
 # Buttons
