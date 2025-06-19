@@ -9,6 +9,16 @@ if not os.path.exists(SAVE_FILE):
     with open(SAVE_FILE, "w") as f:
         json.dump([], f)
 
+def save_monster(monster):
+    with open(SAVE_FILE, "r") as f:
+        data = json.load(f)
+
+    data.append(monster)
+
+    with open(SAVE_FILE, "w") as f:
+        json.dump(data, f, indent=2)
+
+
 
 # ''' Console testing
 # # two random monsters
