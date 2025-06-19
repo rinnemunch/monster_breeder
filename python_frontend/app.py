@@ -1,6 +1,14 @@
 import tkinter as tk
 import requests
 import json
+import os
+
+SAVE_FILE = "saved_monsters.json"
+
+if not os.path.exists(SAVE_FILE):
+    with open(SAVE_FILE, "w") as f:
+        json.dump([], f)
+
 
 # ''' Console testing
 # # two random monsters
