@@ -22,5 +22,21 @@
     "Speed": 31,
     "Rarity": "Epic",
     "Generation": 2
+  },
+  {
+    "Name": "Nibbler",
+    "Color": "Purple",
+    "Strength": 26,
+    "Speed": 77,
+    "Rarity": "Legendary",
+    "Generation": 2
+  },
+  {
+    "Name": "Frostjaw",
+    "Color": "Black",
+    "Strength": 92,
+    "Speed": 32,
+    "Rarity": "Epic",
+    "Generation": 2
   }
 ]

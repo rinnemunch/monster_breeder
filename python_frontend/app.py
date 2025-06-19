@@ -129,6 +129,19 @@ def evolve_selected_monster():
     except Exception as e:
         display.insert(tk.END, f"\n\n❌ Error: {e}")
 
+def save_evolved_monster():
+    content = display.get("1.0", tk.END).strip()
+    if content.startswith("Evolved Monster:"):
+        try:
+            json_data = content.split("Evolved Monster:\n", 1)[1]
+            monster = json.loads(json_data)
+            save_monster(monster)
+            display.insert(tk.END, "\n\n✅ Evolved monster saved!")
+            refresh_monster_list()
+        except Exception as e:
+            display.insert(tk.END, f"\n\n❌ Failed to save: {e}")
+    else:
+        display.insert(tk.END, "\n\n⚠️ No evolved monster to save.")
 
 # Buttons
 generate_btn = tk.Button(root, text="Generate Parents", command=generate_monsters)
@@ -142,6 +155,9 @@ save_btn.pack(pady=5)
 
 evolve_btn = tk.Button(root, text="Evolve Monster", command=evolve_selected_monster)
 evolve_btn.pack(pady=5)
+
+save_evolved_btn = tk.Button(root, text="Save Evolved Monster", command=save_evolved_monster)
+save_evolved_btn.pack(pady=5)
 
 # List box
 monster_listbox = tk.Listbox(root, width=50)
