@@ -69,11 +69,29 @@ def breed_monsters():
 root = tk.Tk()
 root.title("Monster Breeder")
 
+def save_last_monster():
+    content = display.get("1.0", tk.END).strip()
+    if content.startswith("Child Monster:") or content.startswith("Parent 1:"):
+        try:
+            json_data = content.split(":\n", 1)[1]
+            monster = json.loads(json_data)
+            save_monster(monster)
+            display.insert(tk.END, "\n\n✅ Monster saved!")
+        except Exception as e:
+            display.insert(tk.END, f"\n\n❌ Failed to save: {e}")
+    else:
+        display.insert(tk.END, "\n\n⚠️ No valid monster to save.")
+
+
+# Buttons
 generate_btn = tk.Button(root, text="Generate Parents", command=generate_monsters)
 generate_btn.pack(pady=5)
 
 breed_btn = tk.Button(root, text="Breed Monsters", command=breed_monsters)
 breed_btn.pack(pady=5)
+
+save_btn = tk.Button(root, text="Save Monster", command=save_last_monster)
+save_btn.pack(pady=5)
 
 display = tk.Text(root, width=50, height=20)
 display.pack()
