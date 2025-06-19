@@ -89,8 +89,22 @@ def load_saved_monsters():
     except (json.JSONDecodeError, FileNotFoundError):
         return []
 
+def refresh_monster_list():
+    monster_listbox.delete(0, tk.END)
+    monsters = load_saved_monsters()
+    for i, monster in enumerate(monsters):
+        display_name = f"{i+1}. {monster['Name']} (Gen {monster['Generation']})"
+        monster_listbox.insert(tk.END, display_name)
 
-
+def show_selected_monster(event):
+    selection = monster_listbox.curselection()
+    if not selection:
+        return
+    index = selection[0]
+    monsters = load_saved_monsters()
+    selected = monsters[index]
+    display.delete("1.0", tk.END)
+    display.insert(tk.END, json.dumps(selected, indent=2))
 
 # Buttons
 generate_btn = tk.Button(root, text="Generate Parents", command=generate_monsters)
@@ -102,7 +116,14 @@ breed_btn.pack(pady=5)
 save_btn = tk.Button(root, text="Save Monster", command=save_last_monster)
 save_btn.pack(pady=5)
 
+# List box
+monster_listbox = tk.Listbox(root, width=50)
+monster_listbox.pack(pady=5)
+monster_listbox.bind("<<ListboxSelect>>", show_selected_monster)
+
+
 display = tk.Text(root, width=50, height=20)
 display.pack()
 
+refresh_monster_list()
 root.mainloop()
