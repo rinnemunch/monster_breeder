@@ -69,6 +69,8 @@ def breed_monsters():
 root = tk.Tk()
 root.title("Monster Breeder")
 
+
+# Functions
 def save_last_monster():
     content = display.get("1.0", tk.END).strip()
     if content.startswith("Child Monster:"):
@@ -106,6 +108,28 @@ def show_selected_monster(event):
     display.delete("1.0", tk.END)
     display.insert(tk.END, json.dumps(selected, indent=2))
 
+def evolve_selected_monster():
+    selection = monster_listbox.curselection()
+    if not selection:
+        display.insert(tk.END, "\n\n⚠️ No monster selected to evolve.")
+        return
+
+    index = selection[0]
+    monsters = load_saved_monsters()
+    selected = monsters[index]
+
+    try:
+        response = requests.post("http://localhost:8080/evolve", json=selected)
+        if response.status_code == 200:
+            evolved = response.json()
+            display.delete("1.0", tk.END)
+            display.insert(tk.END, "Evolved Monster:\n" + json.dumps(evolved, indent=2))
+        else:
+            display.insert(tk.END, "\n\n❌ Evolution failed.")
+    except Exception as e:
+        display.insert(tk.END, f"\n\n❌ Error: {e}")
+
+
 # Buttons
 generate_btn = tk.Button(root, text="Generate Parents", command=generate_monsters)
 generate_btn.pack(pady=5)
@@ -115,6 +139,9 @@ breed_btn.pack(pady=5)
 
 save_btn = tk.Button(root, text="Save Monster", command=save_last_monster)
 save_btn.pack(pady=5)
+
+evolve_btn = tk.Button(root, text="Evolve Monster", command=evolve_selected_monster)
+evolve_btn.pack(pady=5)
 
 # List box
 monster_listbox = tk.Listbox(root, width=50)
