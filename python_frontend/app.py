@@ -54,17 +54,13 @@ def generate_monsters():
     display.insert(tk.END, "Parent 1:\n" + json.dumps(parent1, indent=2) + "\n\n")
     display.insert(tk.END, "Parent 2:\n" + json.dumps(parent2, indent=2))
 
-    # parent 1 sprite
-    img1 = load_monster_sprite(parent1["Name"])
-    tk_img1 = ImageTk.PhotoImage(img1)
-    parent1_label.configure(image=tk_img1)
-    parent1_label.image = tk_img1
+    img1 = ImageTk.PhotoImage(load_monster_sprite(parent1["Name"]))
+    img2 = ImageTk.PhotoImage(load_monster_sprite(parent2["Name"]))
+    parent1_sprite.config(image=img1)
+    parent1_sprite.image = img1
+    parent2_sprite.config(image=img2)
+    parent2_sprite.image = img2
 
-    # parent 2 sprite
-    img2 = load_monster_sprite(parent2["Name"])
-    tk_img2 = ImageTk.PhotoImage(img2)
-    parent2_label.configure(image=tk_img2)
-    parent2_label.image = tk_img2
 
 
 def breed_monsters():
@@ -246,6 +242,21 @@ battle_btn.config(**btn_style)
 monster_listbox = tk.Listbox(root, width=50, selectmode=tk.MULTIPLE)
 monster_listbox.pack(pady=5)
 monster_listbox.bind("<<ListboxSelect>>", show_selected_monster)
+
+parent_frame = tk.Frame(root)
+parent_frame.pack(pady=10)
+
+parent1_frame = tk.LabelFrame(parent_frame, text="Parent 1", padx=10, pady=10)
+parent1_frame.pack(side="left", padx=10)
+
+parent2_frame = tk.LabelFrame(parent_frame, text="Parent 2", padx=10, pady=10)
+parent2_frame.pack(side="left", padx=10)
+
+parent1_sprite = tk.Label(parent1_frame)
+parent1_sprite.pack()
+
+parent2_sprite = tk.Label(parent2_frame)
+parent2_sprite.pack()
 
 display = tk.Text(root, width=50, height=20)
 display.pack()
