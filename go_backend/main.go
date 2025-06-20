@@ -25,19 +25,16 @@ type Monster struct {
 	Generation int
 }
 
-func generateRandomMonster() Monster {
-	names := []string{"Grizzle", "Zaptoad", "Blazefang", "Nibbler", "Frostjaw"}
-	colors := []string{"Red", "Blue", "Green", "Purple", "Black"}
-	rarities := []string{"Common", "Uncommon", "Rare", "Epic", "Legendary"}
+var monsterTemplates = []Monster{
+	{Name: "Skeleton", Color: "Gray", Strength: 35, Speed: 20, Rarity: "Common", Generation: 1},
+	{Name: "Goblin", Color: "Green", Strength: 40, Speed: 30, Rarity: "Uncommon", Generation: 1},
+	{Name: "Slime", Color: "Blue", Strength: 25, Speed: 40, Rarity: "Common", Generation: 1},
+	{Name: "Orc", Color: "Red", Strength: 60, Speed: 25, Rarity: "Rare", Generation: 1},
+	{Name: "Wraith", Color: "Purple", Strength: 45, Speed: 45, Rarity: "Epic", Generation: 1},
+}
 
-	return Monster{
-		Name:       names[rand.Intn(len(names))],
-		Color:      colors[rand.Intn(len(colors))],
-		Strength:   rand.Intn(100) + 1,
-		Speed:      rand.Intn(100) + 1,
-		Rarity:     rarities[rand.Intn(len(rarities))],
-		Generation: 1,
-	}
+func generateRandomMonster() Monster {
+	return monsterTemplates[rand.Intn(len(monsterTemplates))]
 }
 
 func breedMonsters(parent1, parent2 Monster) Monster {

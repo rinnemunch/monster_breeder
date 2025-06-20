@@ -38,5 +38,13 @@
     "Speed": 32,
     "Rarity": "Epic",
     "Generation": 2
+  },
+  {
+    "Name": "Blazefang",
+    "Color": "Red",
+    "Strength": 45,
+    "Speed": 43,
+    "Rarity": "Legendary",
+    "Generation": 2
   }
 ]
