@@ -67,14 +67,28 @@ def breed_monsters():
     if parent1 and parent2:
         response = requests.post("http://localhost:8080/breed", json=[parent1, parent2])
         display.delete("1.0", tk.END)
+
         if response.status_code == 200:
             child = response.json()
             display.insert(tk.END, "Child Monster:\n" + json.dumps(child, indent=2))
+
+            child_name = child["Name"].replace(" ", "_")
+            image_path = f"sprites/{child_name}.png"
+
+            try:
+                img = Image.open(image_path).resize((100, 100))
+                img = ImageTk.PhotoImage(img)
+                child_image_label.configure(image=img)
+                child_image_label.image = img
+            except Exception as e:
+                print(f"[ERROR] Child sprite not found for {child_name}: {e}")
+                child_image_label.configure(image=None)
         else:
             display.insert(tk.END, "Breeding failed.")
     else:
         display.delete("1.0", tk.END)
         display.insert(tk.END, "Please generate two parents first.")
+
 
 # GUI (tkinter)
 root = tk.Tk()
@@ -89,6 +103,15 @@ parent1_label.pack(side="left", padx=10)
 
 parent2_label = tk.Label(parent_sprite_frame)
 parent2_label.pack(side="left", padx=10)
+
+# Child display frame
+child_frame = tk.LabelFrame(root, text="Child", padx=10, pady=10)
+child_frame.pack(pady=10)
+
+child_image_label = tk.Label(child_frame)
+child_image_label.pack()
+
+
 
 
 

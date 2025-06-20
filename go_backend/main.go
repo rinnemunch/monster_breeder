@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"sort"
 	"time"
 )
 
@@ -38,13 +39,9 @@ func generateRandomMonster() Monster {
 }
 
 func breedMonsters(parent1, parent2 Monster) Monster {
-	// Randomly inherit Name and Color
-	var name string
-	if rand.Intn(2) == 0 {
-		name = parent1.Name
-	} else {
-		name = parent2.Name
-	}
+	names := []string{parent1.Name, parent2.Name}
+	sort.Strings(names)
+	name := names[0] + " " + names[1]
 
 	var color string
 	if rand.Intn(2) == 0 {
