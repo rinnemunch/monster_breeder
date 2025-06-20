@@ -2,6 +2,8 @@ import tkinter as tk
 import requests
 import json
 import os
+from PIL import Image, ImageDraw, ImageTk
+
 
 SAVE_FILE = "saved_monsters.json"
 
@@ -91,6 +93,14 @@ def load_saved_monsters():
     except (json.JSONDecodeError, FileNotFoundError):
         return []
 
+def load_monster_sprite(name):
+    try:
+        img_path = f"sprites/{name.lower()}.png"
+        img = Image.open(img_path).resize((64, 64))
+        return img
+    except FileNotFoundError:
+        return Image.new("RGBA", (64, 64), (0, 0, 0, 0))
+
 def refresh_monster_list():
     monster_listbox.delete(0, tk.END)
     monsters = load_saved_monsters()
@@ -107,6 +117,11 @@ def show_selected_monster(event):
     selected = monsters[index]
     display.delete("1.0", tk.END)
     display.insert(tk.END, json.dumps(selected, indent=2))
+
+    img = load_monster_sprite(selected["Name"])
+    tk_img = ImageTk.PhotoImage(img)
+    sprite_label.configure(image=tk_img)
+    sprite_label.image = tk_img
 
 def evolve_selected_monster():
     selection = monster_listbox.curselection()
@@ -164,9 +179,11 @@ monster_listbox = tk.Listbox(root, width=50)
 monster_listbox.pack(pady=5)
 monster_listbox.bind("<<ListboxSelect>>", show_selected_monster)
 
-
 display = tk.Text(root, width=50, height=20)
 display.pack()
+
+sprite_label = tk.Label(root)
+sprite_label.pack(pady=5)
 
 refresh_monster_list()
 root.mainloop()
