@@ -34,6 +34,23 @@ var monsterTemplates = []Monster{
 	{Name: "wraith", Color: "Purple", Strength: 45, Speed: 45, Rarity: "Epic", Generation: 1},
 }
 
+var hybridMap = map[string]string{
+	"goblin skeleton":   "bone_raider",
+	"skeleton slime":    "gelatin_ghoul",
+	"slime goblin":      "goblin_bomber",
+	"goblin orc":        "grunt_commander",
+	"orc skeleton":      "hellreaver",
+	"orc slime":         "gore_ooze",
+	"slime slime":       "echo_slime",
+	"slime orc":         "king_slime",
+	"goblin goblin":     "muck_bandit",
+	"wraith goblin":     "phantom_lich",
+	"skeleton goblin":   "shade_stabber",
+	"skeleton skeleton": "skeleton_king",
+	"wraith slime":      "void_walker",
+	"orc wraith":        "warlord_remnant",
+}
+
 func generateRandomMonster() Monster {
 	return monsterTemplates[rand.Intn(len(monsterTemplates))]
 }
@@ -41,7 +58,12 @@ func generateRandomMonster() Monster {
 func breedMonsters(parent1, parent2 Monster) Monster {
 	names := []string{parent1.Name, parent2.Name}
 	sort.Strings(names)
-	name := names[0] + " " + names[1]
+	joined := names[0] + " " + names[1]
+
+	name := joined
+	if hybridName, ok := hybridMap[joined]; ok {
+		name = hybridName
+	}
 
 	var color string
 	if rand.Intn(2) == 0 {
