@@ -161,6 +161,31 @@ def save_evolved_monster():
     else:
         display.insert(tk.END, "\n\n⚠️ No evolved monster to save.")
 
+def battle_selected_monsters():
+    selection = monster_listbox.curselection()
+    if len(selection) != 2:
+        display.insert(tk.END, "\n\n⚠️ Please select exactly two monsters to battle.")
+        return
+
+    monsters = load_saved_monsters()
+    m1 = monsters[selection[0]]
+    m2 = monsters[selection[1]]
+
+    try:
+        response = requests.post("http://localhost:8080/battle", json=[m1, m2])
+        display.delete("1.0", tk.END)
+        if response.status_code == 200:
+            result = response.json()
+            display.insert(tk.END, "🏆 Battle Result:\n")
+            display.insert(tk.END, f"Winner: {result['winner']['Name']}\n")
+            display.insert(tk.END, f"Loser: {result['loser']['Name']}\n\n")
+            display.insert(tk.END, "📜 Battle Log:\n" + "\n".join(result['log']))
+        else:
+            display.insert(tk.END, "❌ Battle failed.")
+    except Exception as e:
+        display.insert(tk.END, f"\n\n❌ Error: {e}")
+
+
 # Buttons
 generate_btn = tk.Button(root, text="Generate Parents", command=generate_monsters)
 generate_btn.pack(pady=5)
@@ -176,6 +201,9 @@ evolve_btn.pack(pady=5)
 
 save_evolved_btn = tk.Button(root, text="Save Evolved Monster", command=save_evolved_monster)
 save_evolved_btn.pack(pady=5)
+
+battle_btn = tk.Button(root, text="Battle Monsters", command=battle_selected_monsters)
+battle_btn.pack(pady=5)
 
 # List box
 monster_listbox = tk.Listbox(root, width=50)

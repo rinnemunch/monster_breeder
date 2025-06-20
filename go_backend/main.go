@@ -183,6 +183,60 @@ func evolveHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(evolved)
 }
 
+func battleHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Only POST allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var combatants [2]Monster
+	err := json.NewDecoder(r.Body).Decode(&combatants)
+	if err != nil {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+
+	m1 := combatants[0]
+	m2 := combatants[1]
+
+	log := []string{}
+	total1 := m1.Strength + m1.Speed
+	total2 := m2.Strength + m2.Speed
+
+	log = append(log, fmt.Sprintf("%s enters the battle!", m1.Name))
+	log = append(log, fmt.Sprintf("%s enters the battle!", m2.Name))
+
+	// Add randomness
+	if rand.Float64() < 0.1 {
+		log = append(log, "A wild twist of fate favors the underdog!")
+		if total1 > total2 {
+			total2 += 10
+		} else {
+			total1 += 10
+		}
+	}
+
+	var winner, loser Monster
+	if total1 >= total2 {
+		winner = m1
+		loser = m2
+		log = append(log, fmt.Sprintf("%s wins the battle!", m1.Name))
+	} else {
+		winner = m2
+		loser = m1
+		log = append(log, fmt.Sprintf("%s wins the battle!", m2.Name))
+	}
+
+	response := map[string]interface{}{
+		"winner":     winner,
+		"loser":      loser,
+		"battle_log": log,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
@@ -191,6 +245,7 @@ func main() {
 	http.HandleFunc("/new", newMonsterHandler)
 	http.HandleFunc("/breed", breedHandler)
 	http.HandleFunc("/evolve", evolveHandler)
+	http.HandleFunc("/battle", battleHandler)
 
 	fmt.Println("Server running at http://localhost:8080")
 	fmt.Println("🔥 You are running the CORRECT Go file") //test
