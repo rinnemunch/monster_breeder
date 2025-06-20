@@ -206,7 +206,7 @@ battle_btn = tk.Button(root, text="Battle Monsters", command=battle_selected_mon
 battle_btn.pack(pady=5)
 
 # List box
-monster_listbox = tk.Listbox(root, width=50)
+monster_listbox = tk.Listbox(root, width=50, selectmode=tk.MULTIPLE)
 monster_listbox.pack(pady=5)
 monster_listbox.bind("<<ListboxSelect>>", show_selected_monster)
 
