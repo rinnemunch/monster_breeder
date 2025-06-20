@@ -22,5 +22,13 @@
     "Speed": 27,
     "Rarity": "Rare",
     "Generation": 2
+  },
+  {
+    "Name": "slime wraith",
+    "Color": "Purple",
+    "Strength": 35,
+    "Speed": 42,
+    "Rarity": "Epic",
+    "Generation": 2
   }
 ]
