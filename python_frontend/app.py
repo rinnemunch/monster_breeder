@@ -78,7 +78,9 @@ def breed_monsters():
             try:
                 img = Image.open(image_path).resize((100, 100))
                 img = ImageTk.PhotoImage(img)
-                child_image_label.configure(image=img)
+                if 'child_image_label' in globals():
+                    child_image_label.configure(image=img)
+                    child_image_label.img = img
                 child_image_label.image = img
             except Exception as e:
                 print(f"[ERROR] Child sprite not found for {child_name}: {e}")
@@ -103,17 +105,6 @@ parent1_label.pack(side="left", padx=10)
 
 parent2_label = tk.Label(parent_sprite_frame)
 parent2_label.pack(side="left", padx=10)
-
-# Child display frame
-child_frame = tk.LabelFrame(root, text="Child", padx=10, pady=10)
-child_frame.pack(pady=10)
-
-child_image_label = tk.Label(child_frame)
-child_image_label.pack()
-
-
-
-
 
 # Functions
 def save_last_monster():
@@ -266,20 +257,23 @@ monster_listbox = tk.Listbox(root, width=50, selectmode=tk.MULTIPLE)
 monster_listbox.pack(pady=5)
 monster_listbox.bind("<<ListboxSelect>>", show_selected_monster)
 
-parent_frame = tk.Frame(root)
-parent_frame.pack(pady=10)
+sprite_row = tk.Frame(root)
+sprite_row.pack(pady=10)
 
-parent1_frame = tk.LabelFrame(parent_frame, text="Parent 1", padx=10, pady=10)
-parent1_frame.pack(side="left", padx=10)
+parent1_sprite = tk.Label(sprite_row)
+parent1_sprite.pack(side="left", padx=10)
 
-parent2_frame = tk.LabelFrame(parent_frame, text="Parent 2", padx=10, pady=10)
-parent2_frame.pack(side="left", padx=10)
+plus_label = tk.Label(sprite_row, text="+", font=("Consolas", 16))
+plus_label.pack(side="left")
 
-parent1_sprite = tk.Label(parent1_frame)
-parent1_sprite.pack()
+parent2_sprite = tk.Label(sprite_row)
+parent2_sprite.pack(side="left", padx=10)
 
-parent2_sprite = tk.Label(parent2_frame)
-parent2_sprite.pack()
+equals_label = tk.Label(sprite_row, text="=", font=("Consolas", 16))
+equals_label.pack(side="left")
+
+child_image_label = tk.Label(sprite_row)
+child_image_label.pack(side="left", padx=10)
 
 display = tk.Text(root, width=50, height=20)
 display.pack()
