@@ -187,23 +187,35 @@ def battle_selected_monsters():
 
 
 # Buttons
-generate_btn = tk.Button(root, text="Generate Parents", command=generate_monsters)
-generate_btn.pack(pady=5)
+button_frame = tk.Frame(root)
+button_frame.pack(pady=10)
 
-breed_btn = tk.Button(root, text="Breed Monsters", command=breed_monsters)
-breed_btn.pack(pady=5)
+generate_btn = tk.Button(button_frame, text="Generate Parents", command=generate_monsters)
+generate_btn.grid(row=0, column=0, padx=5, pady=5)
 
-save_btn = tk.Button(root, text="Save Monster", command=save_last_monster)
-save_btn.pack(pady=5)
+breed_btn = tk.Button(button_frame, text="Breed Monsters", command=breed_monsters)
+breed_btn.grid(row=0, column=1, padx=5, pady=5)
 
-evolve_btn = tk.Button(root, text="Evolve Monster", command=evolve_selected_monster)
-evolve_btn.pack(pady=5)
+save_btn = tk.Button(button_frame, text="Save Monster", command=save_last_monster)
+save_btn.grid(row=0, column=2, padx=5, pady=5)
 
-save_evolved_btn = tk.Button(root, text="Save Evolved Monster", command=save_evolved_monster)
-save_evolved_btn.pack(pady=5)
+evolve_btn = tk.Button(button_frame, text="Evolve Monster", command=evolve_selected_monster)
+evolve_btn.grid(row=1, column=0, padx=5, pady=5)
 
-battle_btn = tk.Button(root, text="Battle Monsters", command=battle_selected_monsters)
-battle_btn.pack(pady=5)
+save_evolved_btn = tk.Button(button_frame, text="Save Evolved", command=save_evolved_monster)
+save_evolved_btn.grid(row=1, column=1, padx=5, pady=5)
+
+battle_btn = tk.Button(button_frame, text="Battle Monsters", command=battle_selected_monsters)
+battle_btn.grid(row=1, column=2, padx=5, pady=5)
+
+btn_style = {"font": ("Consolas", 10), "bg": "#222", "fg": "#fff", "activebackground": "#444"}
+
+generate_btn.config(**btn_style)
+breed_btn.config(**btn_style)
+save_btn.config(**btn_style)
+evolve_btn.config(**btn_style)
+save_evolved_btn.config(**btn_style)
+battle_btn.config(**btn_style)
 
 # List box
 monster_listbox = tk.Listbox(root, width=50, selectmode=tk.MULTIPLE)

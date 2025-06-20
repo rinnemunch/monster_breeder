@@ -189,52 +189,40 @@ func battleHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var combatants [2]Monster
-	err := json.NewDecoder(r.Body).Decode(&combatants)
+	var monsters [2]Monster
+	err := json.NewDecoder(r.Body).Decode(&monsters)
 	if err != nil {
 		http.Error(w, "Invalid input", http.StatusBadRequest)
 		return
 	}
 
-	m1 := combatants[0]
-	m2 := combatants[1]
-
-	log := []string{}
-	total1 := m1.Strength + m1.Speed
-	total2 := m2.Strength + m2.Speed
-
-	log = append(log, fmt.Sprintf("%s enters the battle!", m1.Name))
-	log = append(log, fmt.Sprintf("%s enters the battle!", m2.Name))
-
-	// Add randomness
-	if rand.Float64() < 0.1 {
-		log = append(log, "A wild twist of fate favors the underdog!")
-		if total1 > total2 {
-			total2 += 10
-		} else {
-			total1 += 10
-		}
-	}
-
-	var winner, loser Monster
-	if total1 >= total2 {
-		winner = m1
-		loser = m2
-		log = append(log, fmt.Sprintf("%s wins the battle!", m1.Name))
-	} else {
-		winner = m2
-		loser = m1
-		log = append(log, fmt.Sprintf("%s wins the battle!", m2.Name))
-	}
+	winner, loser, log := battleMonsters(monsters[0], monsters[1])
 
 	response := map[string]interface{}{
-		"winner":     winner,
-		"loser":      loser,
-		"battle_log": log,
+		"winner": winner,
+		"loser":  loser,
+		"log":    log,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
+}
+
+func battleMonsters(m1, m2 Monster) (winner Monster, loser Monster, log []string) {
+	log = append(log, fmt.Sprintf("%s (STR: %d, SPD: %d) VS %s (STR: %d, SPD: %d)", m1.Name, m1.Strength, m1.Speed, m2.Name, m2.Strength, m2.Speed))
+
+	m1Score := m1.Strength + m1.Speed + rand.Intn(20)
+	m2Score := m2.Strength + m2.Speed + rand.Intn(20)
+
+	log = append(log, fmt.Sprintf("%s score: %d", m1.Name, m1Score))
+	log = append(log, fmt.Sprintf("%s score: %d", m2.Name, m2Score))
+
+	if m1Score > m2Score {
+		log = append(log, fmt.Sprintf("%s wins the battle!", m1.Name))
+		return m1, m2, log
+	}
+	log = append(log, fmt.Sprintf("%s wins the battle!", m2.Name))
+	return m2, m1, log
 }
 
 func main() {
