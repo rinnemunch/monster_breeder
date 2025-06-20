@@ -37,18 +37,21 @@ var monsterTemplates = []Monster{
 var hybridMap = map[string]string{
 	"goblin skeleton":   "bone_raider",
 	"skeleton slime":    "gelatin_ghoul",
-	"slime goblin":      "goblin_bomber",
+	"slime goblin":      "muck_bandit",
 	"goblin orc":        "grunt_commander",
-	"orc skeleton":      "hellreaver",
+	"orc skeleton":      "warlord_remnant",
 	"orc slime":         "gore_ooze",
-	"slime slime":       "echo_slime",
+	"slime slime":       "king_slime",
 	"slime orc":         "king_slime",
-	"goblin goblin":     "muck_bandit",
-	"wraith goblin":     "phantom_lich",
+	"goblin goblin":     "goblin_bomber",
+	"wraith goblin":     "shade_stabber",
 	"skeleton goblin":   "shade_stabber",
 	"skeleton skeleton": "skeleton_king",
-	"wraith slime":      "void_walker",
-	"orc wraith":        "warlord_remnant",
+	"wraith slime":      "echo_slime",
+	"orc wraith":        "hellreaver",
+	"skeleton wraith":   "phantom_lich",
+	"orc orc":           "bloodfang",
+	"wraith wraith":     "void_walker",
 }
 
 func generateRandomMonster() Monster {
