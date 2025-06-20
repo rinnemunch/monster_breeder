@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "Name": "Orc",
+    "Color": "Red",
+    "Strength": 60,
+    "Speed": 25,
+    "Rarity": "Rare",
+    "Generation": 2
+  }
+]

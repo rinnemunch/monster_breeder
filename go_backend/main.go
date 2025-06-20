@@ -26,11 +26,11 @@ type Monster struct {
 }
 
 var monsterTemplates = []Monster{
-	{Name: "Skeleton", Color: "Gray", Strength: 35, Speed: 20, Rarity: "Common", Generation: 1},
-	{Name: "Goblin", Color: "Green", Strength: 40, Speed: 30, Rarity: "Uncommon", Generation: 1},
-	{Name: "Slime", Color: "Blue", Strength: 25, Speed: 40, Rarity: "Common", Generation: 1},
-	{Name: "Orc", Color: "Red", Strength: 60, Speed: 25, Rarity: "Rare", Generation: 1},
-	{Name: "Wraith", Color: "Purple", Strength: 45, Speed: 45, Rarity: "Epic", Generation: 1},
+	{Name: "skeleton", Color: "Gray", Strength: 35, Speed: 20, Rarity: "Common", Generation: 1},
+	{Name: "goblin", Color: "Green", Strength: 40, Speed: 30, Rarity: "Uncommon", Generation: 1},
+	{Name: "slime", Color: "Blue", Strength: 25, Speed: 40, Rarity: "Common", Generation: 1},
+	{Name: "orc", Color: "Red", Strength: 60, Speed: 25, Rarity: "Rare", Generation: 1},
+	{Name: "wraith", Color: "Purple", Strength: 45, Speed: 45, Rarity: "Epic", Generation: 1},
 }
 
 func generateRandomMonster() Monster {

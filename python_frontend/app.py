@@ -96,10 +96,13 @@ def load_saved_monsters():
 def load_monster_sprite(name):
     try:
         img_path = f"sprites/{name.lower()}.png"
+        print(f"[INFO] Trying to load: {img_path}")
         img = Image.open(img_path).resize((64, 64))
         return img
     except FileNotFoundError:
+        print(f"[ERROR] Sprite not found for: {img_path}")
         return Image.new("RGBA", (64, 64), (0, 0, 0, 0))
+
 
 def refresh_monster_list():
     monster_listbox.delete(0, tk.END)
