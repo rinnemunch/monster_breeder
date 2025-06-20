@@ -54,6 +54,19 @@ def generate_monsters():
     display.insert(tk.END, "Parent 1:\n" + json.dumps(parent1, indent=2) + "\n\n")
     display.insert(tk.END, "Parent 2:\n" + json.dumps(parent2, indent=2))
 
+    # parent 1 sprite
+    img1 = load_monster_sprite(parent1["Name"])
+    tk_img1 = ImageTk.PhotoImage(img1)
+    parent1_label.configure(image=tk_img1)
+    parent1_label.image = tk_img1
+
+    # parent 2 sprite
+    img2 = load_monster_sprite(parent2["Name"])
+    tk_img2 = ImageTk.PhotoImage(img2)
+    parent2_label.configure(image=tk_img2)
+    parent2_label.image = tk_img2
+
+
 def breed_monsters():
     if parent1 and parent2:
         response = requests.post("http://localhost:8080/breed", json=[parent1, parent2])
@@ -70,6 +83,17 @@ def breed_monsters():
 # GUI (tkinter)
 root = tk.Tk()
 root.title("Monster Breeder")
+
+# Parent display
+parent_sprite_frame = tk.Frame(root)
+parent_sprite_frame.pack(pady=5)
+
+parent1_label = tk.Label(parent_sprite_frame)
+parent1_label.pack(side="left", padx=10)
+
+parent2_label = tk.Label(parent_sprite_frame)
+parent2_label.pack(side="left", padx=10)
+
 
 
 # Functions
