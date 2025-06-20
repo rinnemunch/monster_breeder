@@ -152,11 +152,9 @@ func breedHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func evolveMonster(m Monster) Monster {
-	// Level up stats slightly
 	m.Strength += rand.Intn(5) + 1
 	m.Speed += rand.Intn(5) + 1
 
-	// Chance to evolve rarity
 	if rand.Float64() < 0.20 && rarityRank(m.Rarity) < 5 {
 		nextRank := rarityRank(m.Rarity) + 1
 		m.Rarity = rankToRarity(nextRank)
